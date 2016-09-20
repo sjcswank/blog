@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<hr>
+{% for entry in entries %}
+  <div class="entries">
+    <div class="entry-title">{{entries.title}}{{entries.created}}</div>
+    <pre class="entry-body">{{entries.entry}}</pre>
+{% endfor %}
+
+
+{% endblock %}

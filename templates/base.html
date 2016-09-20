@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My Blog</title>
+
+</head>
+
+<body>
+  <div class="center">
+    <h1>
+        <a href="/blog">My Blog</a>
+    </h1>
+    <hr>
+  </div>
+
+  <form method="post" action="/create">
+    <label>
+      <div>Title</div>
+      <input type="text" name="title" value="{{title}}">
+    </label>
+
+    <label>
+      <div>Entry</div>
+      <textarea name="entry" height=300px width=300px >{{entry}}</textarea>
+    </label>
+    <div class="error">{{error}}</div>
+    <input type="submit"></input>
+  </form>
+    <!-- {% block content %}
+    {% endblock %} -->
+  <hr>
+  <div class="entries">
+    <div class="entry-title">{{posts.title}}{{posts.created}}</div>
+    <pre class="entry-body">{{posts.entry}}</pre>
+  </div>
+
+  </body>
+</html>
