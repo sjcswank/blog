@@ -25,27 +25,20 @@ class Handler(webapp2.RequestHandler):
 class Entries(db.Model):
     title = db.StringProperty(required = True)
     entry = db.TextProperty(required = True)
-    created = db.DateTimeProperty(auto_now_add = True)
-    last_modified = db.DateTimeProperty(auto_now = True)
-
-    def render(self):
-        self._render_text = self.entry.replace('\n', '<br>')
-        return render_str("create.html", e = self)
-
+    created = db.DateProperty(auto_now_add = True)
 
 class MainHandler(Handler):
-    def get(self):
-        posts = db.GqlQuery("SELECT * FROM Entries ORDER BY created DESC")
-        self.render("base.html", posts=posts)
+    def render_front(self, title="", entry="", error=""):
+        entries = db.GqlQuery("SELECT * FROM Entries "
+                           "ORDER BY created DESC ")
+        self.render("front.html", title=title, entry=entry, error=error, entries=entries)
 
-class CreatePost(Handler):
     def get(self):
-        # get error
-        title = ""
-        entry = ""
-        error = self.request.get("error")
-        #render page with error_element
-        self.render("create.html", title=title, entry=entry, error=error)
+        self.render_front()
+
+class CreateHandler(Handler):
+    def get(self):
+        self.render("create.html")
 
     def post(self):
         title= self.request.get("title")
@@ -54,16 +47,27 @@ class CreatePost(Handler):
         if title and entry:
             e = Entries(title = title, entry = entry)
             e.put()
-
-            self.redirect('/blog')
+            id = e.key().id()
+            self.redirect('/blog/' + str(id))
 
         else:
             error = "We need both a title and entry!"
-            self.redirect('/create')
+            self.render("create.html", title=title, entry=entry, error=error)
+
+class ViewPostHandler(Handler):
+    def get(self, id):
+        #self.response.write(id)
+        entries = Entries.get_by_id(int(id))
+        if entries:
+            self.render("viewpost.html", title=entries.title, created=entries.created, entry=entries.entry)
+        else:
+            error = "<h2>This is not the entry you are looking for.</h2>"
+            self.render('front.html', error=error)
 
 
 
 app = webapp2.WSGIApplication([
     ('/blog', MainHandler),
-    ('/create', CreatePost)
+    ('/create', CreateHandler),
+    webapp2.Route('/blog/<id:\d+>', ViewPostHandler)
 ], debug=True)

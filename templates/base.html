@@ -2,6 +2,75 @@
 <html>
   <head>
     <title>My Blog</title>
+    <style type="text/css">
+      body {
+        font-family: sans-serif;
+        width: 800px;
+        margin: 0 auto;
+        padding: 10px;
+        color: #333333;
+      }
+
+      .error{
+        color: red;
+      }
+
+      label {
+        display: block;
+        font-size: 20px;
+      }
+
+      input[type=text] {
+        width: 400px;
+        font-size: 20px;
+        padding: 2px;
+      }
+
+      textarea {
+        width: 400px;
+        height: 200px;
+        font-size: 20px;
+        font-family: monospace;
+      }
+
+      input[type=submit] {
+        font-size: 24px;
+      }
+
+      hr {
+        margin: 20px auto;
+        color: #3385ff;
+        background-color: #3385ff;
+        border: none;
+      }
+
+      .center {
+        margin:auto;
+        text-align: center;
+        font-size: 46px;
+        font-family: sans-serif;
+        width: 50%;
+        border: 3px solid #3385ff;
+        padding: 5px;
+      }
+
+      .entries-entry {
+        margin-top: 20px;
+      }
+
+      entries.title {
+        font-weight: bold;
+        font-size: 20px;
+      }
+      entries.body {
+        margin: 0;
+        font-size: 17px;
+      }
+      entries.created {
+        font-size: 15px;
+        text-align: right;
+      }
+      </style>
 
 </head>
 
@@ -10,29 +79,10 @@
     <h1>
         <a href="/blog">My Blog</a>
     </h1>
-    <hr>
   </div>
-
-  <form method="post" action="/create">
-    <label>
-      <div>Title</div>
-      <input type="text" name="title" value="{{title}}">
-    </label>
-
-    <label>
-      <div>Entry</div>
-      <textarea name="entry" height=300px width=300px >{{entry}}</textarea>
-    </label>
-    <div class="error">{{error}}</div>
-    <input type="submit"></input>
-  </form>
-    <!-- {% block content %}
-    {% endblock %} -->
   <hr>
-  <div class="entries">
-    <div class="entry-title">{{posts.title}}{{posts.created}}</div>
-    <pre class="entry-body">{{posts.entry}}</pre>
-  </div>
-
+  {{error}}
+{% block content %}
+{% endblock%}
   </body>
 </html>

@@ -2,12 +2,15 @@
 
 {% block content %}
 
-<hr>
-{% for entry in entries %}
+{% if entries %}
+{% for post in entries %}
+  <hr>
   <div class="entries">
-    <div class="entry-title">{{entries.title}}{{entries.created}}</div>
-    <pre class="entry-body">{{entries.entry}}</pre>
+    <div class="entry-title">
+      <a href="/blog/{{post.key().id()}}">{{post.title}}</a>{{post.created}}</div>
+    <pre class="entry-body">{{post.entry}}</pre>
+  </div>
 {% endfor %}
-
+{% endif %}
 
 {% endblock %}
